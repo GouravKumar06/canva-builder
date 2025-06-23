@@ -4,6 +4,7 @@ import AiFeatures from "@/components/home/ai-features";
 import Banner from "@/components/home/banner";
 import DesignTypes from "@/components/home/design-types";
 import Header from "@/components/home/header";
+import RecentDesigns from "@/components/home/recentDesigns";
 import Sidebar from "@/components/home/sidebar";
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
           <Banner />
           <DesignTypes />
           <AiFeatures />
-          {/* <RecentDesigns /> */}
+          <RecentDesigns />
         </main>
       </div>
       {/* <SubscriptionModal

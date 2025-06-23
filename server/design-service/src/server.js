@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
+const designRoutes = require('./routes/design.route');
 
 
 const app = express();
@@ -20,6 +21,9 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//routes
+app.use('/api/design', designRoutes);
 
 async function startServer() {
     try {

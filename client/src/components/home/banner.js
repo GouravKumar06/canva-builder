@@ -1,10 +1,44 @@
-
-
-import { Crown } from 'lucide-react'
-import React from 'react'
+import { Crown, Loader } from 'lucide-react'
+import React, { useState } from 'react'
 import { Button } from '../ui/button'
+import { saveDesign } from '@/services/designService'
+import { useRouter } from "next/navigation";
 
 const Banner = () => {
+
+    const [loading,setLoading] = useState(false)
+    const router = useRouter();
+
+    const handleCreateNewDesign = async() => {
+
+        if(loading) return
+        try{
+            setLoading(true)
+            
+            const initialDesignData = {
+                name : 'Untitled Design',
+                canvaData : null,
+                width : 825,
+                height : 465,
+                category : 'youtube_thumbnail'
+            }
+
+            const newDesign = await saveDesign(initialDesignData)
+
+            if (newDesign?.success) {
+              router.push(`/editor/${newDesign?.data?._id}`);
+              setLoading(false);
+            } else {
+              throw new Error("Failed to create new design");
+            }
+
+        }catch(error){
+            console.log(error);
+            setLoading(false)
+        }
+        
+    }
+
   return (
     <div className="rounded-xl overflow-hidden bg-gradient-to-r from-[#00c4cc] via-[#8b3dff] to-[#5533ff] text-white p-4 sm:p-6 md:p-8 text-center">
         <div className="flex flex-col sm:flex-row justify-center items-center mb-2 sm:mb-4">
@@ -17,10 +51,10 @@ const Banner = () => {
             Design eye-catching thumbnails that get more views
         </h2>
         <Button
-            // onClick={handleCreateNewDesign}
+            onClick={handleCreateNewDesign}
             className="text-[#8b3dff] bg-white hover:bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-2.5"
         >
-            {/* {loading && <Loader className="w-4 h-4" />} */}
+            {loading && <Loader className="w-4 h-4" />}
             Start Desiging
         </Button>
     </div>

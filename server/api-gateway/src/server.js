@@ -18,12 +18,15 @@ app.use(express.urlencoded({ extended: true }));
 //proxy options
 const options = {
     proxyReqPathResolver: (req) => {
-        return req.originalUrl.replace(/^\/v1/, '/api');
+        const path = req.originalUrl.replace(/^\/v1/, "/api");
+        console.log("📦 Proxied Path:", path); // ← add this
+        return path;
     },
     proxyErrorHandler: (err, res, next) => {
+        console.error("❌ Proxy Error:", err.message); // ← add this
         res.status(500).json({
-            message : "Internal Server Error",
-            error : err.message
+          message: "Internal Server Error",
+          error: err.message,
         });
     }
 }
@@ -36,10 +39,13 @@ app.use(
   })
 );
 
-app.use("/v1/media", authMiddleware, proxy(process.env.UPLOAD, {
-    ...options,
-    parseReqBody : false
-}));
+app.use("/v1/media", 
+    authMiddleware, 
+    proxy(process.env.UPLOAD, {
+        ...options,
+        parseReqBody : false
+    })
+);
 
 app.use(
   "/v1/subscription",

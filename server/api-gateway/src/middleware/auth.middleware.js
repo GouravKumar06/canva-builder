@@ -5,6 +5,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 async function authMiddleware(req, res, next) {
   const authHeader = req.headers["authorization"];
+
   const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
